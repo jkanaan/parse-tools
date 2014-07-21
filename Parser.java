@@ -1,4 +1,5 @@
 package parse;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -26,18 +27,18 @@ public class Parser {
 	final static String commaDelimiter = ",|\n";
 
 	private String[] fields;
-	
-	public Parser(){
+
+	public Parser() {
 	}
-	
-	public Parser(String[] fields){
-		this.fields=fields;
+
+	public Parser(String[] fields) {
+		this.fields = fields;
 	}
-	
+
 	/*
 	 * Each of these parse functions corresponds to a particular delimiter and
 	 * its fields. They route the appropriate file, delimiter, and set of fields
-	 * to the main parse function.
+	 * to the main parse function. Each has a static and non-static version.
 	 */
 	public List<HashMap<String, String>> pipeParse(File pipe) {
 		return (parse(pipe, fields, pipeDelimiter));
@@ -50,19 +51,29 @@ public class Parser {
 	public List<HashMap<String, String>> commaParse(File comma) {
 		return (parse(comma, fields, commaDelimiter));
 	}
-	
-	public static List<HashMap<String, String>> pipeParse(File pipe, String[] fields) {
+
+	public static List<HashMap<String, String>> pipeParse(File pipe,
+			String[] fields) {
 		return (parse(pipe, fields, pipeDelimiter));
 	}
 
-	public static List<HashMap<String, String>> spaceParse(File space, String[] fields) {
+	public static List<HashMap<String, String>> spaceParse(File space,
+			String[] fields) {
 		return (parse(space, fields, spaceDelimiter));
 	}
 
-	public static List<HashMap<String, String>> commaParse(File comma, String[] fields) {
+	public static List<HashMap<String, String>> commaParse(File comma,
+			String[] fields) {
 		return (parse(comma, fields, commaDelimiter));
 	}
-	
+
+	/*
+	 * Non-static version of the main parse function.
+	 */
+	public List<HashMap<String, String>> parse(File file, String delimiter) {
+		return parse(file, fields, delimiter);
+	}
+
 	/*
 	 * The main, generic parse function that retrieves all of the data and puts
 	 * it into an ArrayList of HashMaps.
@@ -102,14 +113,14 @@ public class Parser {
 				 * Makes sure that all data of the same type has the same format
 				 * (i.e "Male" vs. "M").
 				 */
-				//token = standardize(fields[currentField], token);
+				// token = standardize(fields[currentField], token);
 
 				/* Places a piece of data into a item's HashMap. */
 				itemInfo.put(fields[currentField], token);
 
 				/* Once the last field is reached... */
 				if (currentField == fields.length - 1) {
-					/* Adds an empty middle initial field, if it is missing.*/
+					/* Adds an empty middle initial field, if it is missing. */
 					if (!Arrays.asList(fields).contains("middleInitial")) {
 						itemInfo.put("middleInitial", "");
 					}
